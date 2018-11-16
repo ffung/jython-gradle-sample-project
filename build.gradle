@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath files('/Users/fai/work/abn/jython-gradle-plugin/build/libs/jython-gradle-plugin-0.8.1-dev.1.uncommitted+a8a3827.jar')
+        classpath files('/Users/fai/work/abn/jython-gradle-plugin/build/libs/jython-gradle-plugin-0.8.1-dev.3.uncommitted+934f25c.jar')
 
         classpath 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
         classpath "org.apache.commons:commons-compress:1.10"
@@ -23,7 +23,7 @@ jython {
   // Replace all repositories with this one
   sourceRepositories = []
   // Add another repository to the existing ones
-  repository new com.hierynomus.gradle.plugins.jython.repository.PypiRepository('http://192.168.99.100:32769/repository/ORG-PYTHON-proxy/simple/${dep.name}/')
+  repository pypiLegacy('http://192.168.99.100:32769/repository/ORG-PYTHON-proxy/simple/${dep.name}/')
 }
 
 repositories {
@@ -33,49 +33,54 @@ repositories {
 dependencies {
   runtimeOnly 'org.python:jython-standalone:2.7.1'
   jython ":requests:2.20.1"
-  jython python(":pytest:3.10.1") {
+  jython ":idna:2.7"
+  jython ":chardet:3.0.4"
+  jython ":certifi:2018.10.15"
+  jython ":urllib3:1.24"
+
+  testJython python(":pytest:3.10.1") {
     useModuleName = false
     copy {
       from "src" // Will copy the contents of the directory into the module directory
     }
   }
-  jython ":py:1.7.0"
-  jython python(":six:1.11.0") {
+  testJython ":py:1.7.0"
+  testJython python(":six:1.11.0") {
     useModuleName = false
     copy {
       from "six.py" // Will only copy six.py
     }
   }
-  jython ":setuptools:40.6.2"
-  jython python (":setuptools:40.6.2:pkg_resources") {
+  testJython ":setuptools:40.6.2"
+  testJython python (":setuptools:40.6.2:pkg_resources") {
     copy {
       from "pkg_resources"
     }
   }
-  jython python(":attrs:18.2.0:attr") {
+  testJython python(":attrs:18.2.0:attr") {
     copy {
       from "src/attr"
     }
   }
-  jython ":more-itertools:4.3.0:more_itertools"
-  jython ":atomicwrites:1.2.1"
-  jython ':funcsigs:1.0.2'
-  jython python(':pathlib2:2.3.0') {
+  testJython ":more-itertools:4.3.0:more_itertools"
+  testJython ":atomicwrites:1.2.1"
+  testJython ':funcsigs:1.0.2'
+  testJython python(':pathlib2:2.3.0') {
     useModuleName = false
     copy {
       from "pathlib2.py"
     }
   }
-  jython ':pluggy:0.8.0'
-  jython python(':scandir:1.9.0') {
+  testJython ':pluggy:0.8.0'
+  testJython python(':scandir:1.9.0') {
     useModuleName = false
     copy {
       from "scandir.py"
     }
   }
-  jython ':mock:2.0.0'
-  jython ":backports.unittest_mock:1.4:backports"
-  jython ":pbr:5.1.1"
+  testJython ':mock:2.0.0'
+  testJython ":backports.unittest_mock:1.4:backports"
+  testJython ":pbr:5.1.1"
 }
 
 sourceSets.main.resources.srcDirs += ['src/main/jython']
